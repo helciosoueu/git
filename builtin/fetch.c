@@ -2058,6 +2058,21 @@ static int fetch_one(struct remote *remote, int argc, const char **argv,
 	return exit_code;
 }
 
+static int opt_parse_output_format(const struct option *opt, const char *arg, int unset)
+{
+	enum display_format *format = opt->value;
+	if (unset || !arg)
+		return 1;
+	else if (!strcmp(arg, "full"))
+		*format = DISPLAY_FORMAT_FULL;
+	else if (!strcmp(arg, "compact"))
+		*format = DISPLAY_FORMAT_COMPACT;
+	else
+		return error(_("unsupported output format '%s'"), arg);
+
+	return 0;
+}
+
 int cmd_fetch(int argc, const char **argv, const char *prefix)
 {
 	const char *bundle_uri;
@@ -2109,6 +2124,8 @@ int cmd_fetch(int argc, const char **argv, const char *prefix)
 			    PARSE_OPT_OPTARG, option_fetch_parse_recurse_submodules),
 		OPT_BOOL(0, "dry-run", &dry_run,
 			 N_("dry run")),
+		OPT_CALLBACK(0, "output-format", &display_format, N_("format"), N_("output format"),
+			     opt_parse_output_format),
 		OPT_BOOL(0, "write-fetch-head", &write_fetch_head,
 			 N_("write fetched references to the FETCH_HEAD file")),
 		OPT_BOOL('k', "keep", &keep, N_("keep downloaded pack")),
