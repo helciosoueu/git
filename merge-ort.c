@@ -4687,10 +4687,10 @@ void merge_finalize(struct merge_options *opt,
 		git_attr_set_direction(GIT_ATTR_CHECKIN);
 	assert(opt->priv == NULL);
 
-	if (!result->priv)
-		return;
-	clear_or_reinit_internal_opts(result->priv, 0);
-	FREE_AND_NULL(result->priv);
+	if (result->priv) {
+		clear_or_reinit_internal_opts(result->priv, 0);
+		FREE_AND_NULL(result->priv);
+	}
 }
 
 /*** Function Grouping: helper functions for merge_incore_*() ***/
