@@ -2,6 +2,8 @@
 #include "gettext.h"
 #include "merge-ort.h"
 #include "merge-ort-wrappers.h"
+#include "repository.h"
+#include "tree.h"
 
 #include "commit.h"
 
